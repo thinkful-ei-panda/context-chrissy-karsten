@@ -1,26 +1,25 @@
-import React from 'react'
-import Note from '../Note/Note'
-import './NotePageMain.css'
+import React from 'react';
+import Note from '../Note/Note';
+import './NotePageMain.css';
+import NoteContext from '../NoteContext';
 
-export default function NotePageMain(props) {
-  return (
-    <section className='NotePageMain'>
-      <Note
-        id={props.note.id}
-        name={props.note.name}
-        modified={props.note.modified}
-      />
-      <div className='NotePageMain__content'>
-        {props.note.content.split(/\n \r|\n/).map((para, i) =>
-          <p key={i}>{para}</p>
+export default class NotePageMain extends React.Component {
+  static contextType = NoteContext;
+  render() {
+    const { notes } = this.context;
+    return (
+      <NoteContext.Consumer>
+        {(value) => (
+          <section className="NotePageMain">
+            <Note id={notes.id} name={notes.name} modified={notes.modified} />
+            <div className="NotePageMain__content">
+              {notes.content.split(/\n \r|\n/).map((para, i) => (
+                <p key={i}>{para}</p>
+              ))}
+            </div>
+          </section>
         )}
-      </div>
-    </section>
-  )
-}
-
-NotePageMain.defaultProps = {
-  note: {
-    content: '',
+      </NoteContext.Consumer>
+    );
   }
 }
